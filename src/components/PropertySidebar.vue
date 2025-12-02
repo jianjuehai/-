@@ -62,7 +62,7 @@
 defineProps({
   isOpen: Boolean,
   activeObject: Object,
-  attributes: Object, // { fill, stroke, strokeWidth }
+  attributes: Object,
 })
 
 defineEmits(['update-attribute', 'delete', 'close'])

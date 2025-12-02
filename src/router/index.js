@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import WhiteBoard from '../views/WhiteBoard.vue'
-// 假设你以后会有一个首页
-// import Home from '../views/Home.vue'
 
 const routes = [
   {

@@ -161,7 +161,7 @@ defineProps({
   currentTool: String,
   canUndo: Boolean,
   canRedo: Boolean,
-  isBusy: Boolean, // saving or loading
+  isBusy: Boolean,
   isLoading: Boolean,
   isConnected: Boolean,
   statusMessage: String,

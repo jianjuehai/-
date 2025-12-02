@@ -1,7 +1,7 @@
 import { ref, markRaw, onUnmounted } from 'vue'
 import { fabric } from 'fabric'
 
-// [全局补丁] 彻底解决 Canvas2D 性能警告
+// 解决 Canvas2D 性能警告
 // 劫持 Fabric 内部创建 Canvas 的工具方法
 // 这样无论是主画布、上层交互画布，还是对象内部的缓存画布，都会自动开启优化
 const originalCreateCanvas = fabric.util.createCanvasElement
@@ -23,16 +23,16 @@ export function useCanvas() {
   let isUndoRedoing = false
   const MAX_HISTORY = 50
 
-  // [Day 11 新增] 橡皮擦待删除列表
+  // 橡皮擦待删除列表
   // 使用 Set 防止重复添加同一个物体
   const erasingCandidates = new Set()
   // 标记当前是否处于橡皮擦模式
   let isEraserMode = false
-  // [新增] 标记鼠标是否按下
+  // 标记鼠标是否按下
   let isMouseDown = false
-  // [新增] 记录上一次鼠标位置，用于连线检测
+  // 记录上一次鼠标位置，用于连线检测
   let lastPointer = null
-  // [新增] 批量操作锁：防止批量删除时触发多次 saveHistory
+  // 批量操作锁：防止批量删除时触发多次 saveHistory
   let isBatchOperation = false
 
   const generateId = () => {
@@ -52,7 +52,6 @@ export function useCanvas() {
   const initCanvas = (canvasId) => {
     const canvasEl = document.getElementById(canvasId)
     // 手动获取 2d context 并开启 willReadFrequently 优化
-    // 注意：这一步必须在 new fabric.Canvas 之前做
     if (canvasEl) {
       canvasEl.getContext('2d', { willReadFrequently: true })
     }
@@ -74,14 +73,14 @@ export function useCanvas() {
 
     canvas.value = markRaw(c)
     bindEvents(c)
-    // [Day 12] 启动响应式监听
+    // 启动响应式监听
     window.addEventListener('resize', resizeCanvas)
     resizeCanvas() // 初始化执行一次
     saveHistory()
     return c
   }
 
-  // [Day 12] 响应式调整画布大小
+  // 响应式调整画布大小
   const resizeCanvas = () => {
     if (!canvas.value) return
     const c = canvas.value
@@ -105,14 +104,14 @@ export function useCanvas() {
       activeObject.value = null
     })
 
-    // --- [Day 11 重构] 橡皮擦逻辑：触碰变淡，松手删除 ---
+    // --- 橡皮擦逻辑：触碰变淡，松手删除 ---
 
     // 1. 鼠标按下：如果是橡皮擦模式，清空待删除列表
     c.on('mouse:down', (e) => {
       isMouseDown = true
       if (isEraserMode) {
         erasingCandidates.clear()
-        // [新增] 记录起始点
+        // 记录起始点
         lastPointer = c.getPointer(e.e)
       }
     })
@@ -159,7 +158,7 @@ export function useCanvas() {
 
         // 只要满足 A 或 B 任意一个
         if (hitBox || hitLine) {
-          // 3. 终极方案：多点采样像素检测
+          // 多点采样像素检测
           // 解决矛盾：
           // - 必须用像素检测 (isTargetTransparent) 才能防止交叉线误删。
           // - 必须在轨迹上多测几个点，才能防止快速移动时漏掉细线。
@@ -277,7 +276,7 @@ export function useCanvas() {
     c.on('object:removed', (e) => handleAction('remove', e))
   }
 
-  // --- [Day 12] 辅助功能：重置视图 ---
+  // --- 辅助功能：重置视图 ---
   const resetZoom = () => {
     if (!canvas.value) return
     const c = canvas.value
@@ -408,7 +407,7 @@ export function useCanvas() {
     }
   }
 
-  // [Day 11 修改] 设置模式
+  // 设置模式
   const setMode = (mode, brushColor = '#000000', brushWidth = 5) => {
     if (!canvas.value) return
     const c = canvas.value

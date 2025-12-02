@@ -142,7 +142,7 @@ const syncAttribute = (key, value) => {
 }
 
 const copyLink = async () => {
-  // ... 复制链接逻辑 (可以使用 store.setStatus 替代本地 setStatus) ...
+  // ... 复制链接逻辑 ...
   const url = window.location.href
   try {
     await navigator.clipboard.writeText(url)
@@ -175,14 +175,13 @@ const downloadImage = () => {
 watch(
   () => route.params.id,
   async (newId) => {
-    // [修改] 加上 async
     if (newId) {
       store.boardId = newId
 
-      // [新增] 1. 重新加载云端数据
+      // 1. 重新加载云端数据
       await handleLoad()
 
-      // [新增] 2. 切换 Socket 房间
+      // 2. 切换 Socket 房间
       if (isConnected.value) {
         joinRoom(newId)
       }
@@ -263,7 +262,7 @@ onMounted(async () => {
   else socket.once('connect', () => joinRoom(store.boardId))
 })
 
-// [新增] 组件销毁时的清理逻辑
+// 组件销毁时的清理逻辑
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
   socket.off('draw') // 移除监听，防止内存泄漏
