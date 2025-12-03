@@ -5,6 +5,11 @@ const bodyParser = require('koa-bodyparser')
 const http = require('http') // Node原生http模块
 const { Server } = require('socket.io') // Socket.io
 
+// 引入 path 和 fs 模块以及 koa-static。目的是为了后续可能的静态文件服务
+const path = require('path')
+const fs = require('fs')
+const serve = require('koa-static')
+
 const app = new Koa()
 const router = new Router()
 
@@ -31,6 +36,15 @@ const checkBoardAccess = (board, password) => {
 // 中间件配置
 app.use(cors()) // 允许跨域
 app.use(bodyParser()) // 解析 JSON 请求体
+
+// --- 托管前端静态资源 (放在 API 路由之前) ---
+// dist 在项目根目录，而 server/index.js 在 server 目录，所以是 ../dist
+const staticPath = path.join(__dirname, '../dist')
+
+// 只有当 dist 目录存在时才托管，避免开发环境报错
+if (fs.existsSync(staticPath)) {
+  app.use(serve(staticPath))
+}
 
 // --- API 定义 ---
 
@@ -107,6 +121,23 @@ router.post('/api/board/:id/verify', async (ctx) => {
 })
 // 挂载路由
 app.use(router.routes()).use(router.allowedMethods())
+
+// --- 处理 Vue Router 的 History 模式 ---
+// 如果请求的不是 API，也不是静态资源，就返回 index.html
+// 必须放在 router 挂载之后，作为最后的兜底
+app.use(async (ctx) => {
+  // 如果是 API 请求但没匹配到路由（404），直接返回，不返回 HTML
+  if (ctx.path.startsWith('/api')) return
+
+  // 检查是否是前端路由请求
+  if (
+    ctx.method === 'GET' &&
+    fs.existsSync(path.join(staticPath, 'index.html'))
+  ) {
+    ctx.type = 'html'
+    ctx.body = fs.createReadStream(path.join(staticPath, 'index.html'))
+  }
+})
 
 // --- WebSocket 设置 ---
 

@@ -36,7 +36,7 @@
         <canvas id="c"></canvas>
         <!-- isLoading -> store.isLoading -->
         <div class="loading-overlay" v-if="store.isLoading">
-          <div class="spinner">加载中...</div>
+          <div class="spinner"></div>
         </div>
       </div>
 
