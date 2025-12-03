@@ -3,12 +3,7 @@
 这是一个基于 **Vue 3** 和 **Fabric.js** 构建的实时协作白板应用。支持多人在线绘图、形状绘制、属性编辑、撤销重做以及云端保存等功能。后端采用 **Koa** + **Socket.io** 实现实时同步。
 
 ## 📺 视频演示
-
-<div align="center">
-  <video src="https://github.com/jianjuehai/MVP-for-an-online-collaborative-whiteboard/issues/1#issue-3689704565" controls width="100%" autoplay loop muted></video>
-  <br/>
-  <small>如果视频无法播放，请<a href="https://github.com/jianjuehai/MVP-for-an-online-collaborative-whiteboard/issues/1#issue-3689704565">点击此处下载观看</a></small>
-</div>
+  [点击此处观看视频演示](https://github.com/jianjuehai/MVP-for-an-online-collaborative-whiteboard/issues/1#issue-3689704565)
 
 ## ✨ 功能特性
 
