@@ -130,7 +130,17 @@ const handleLoad = async (password = '') => {
     const res = await getBoard(store.boardId, password)
 
     if (res.code === 0) {
-      if (res.data) loadFromJSON(res.data)
+      // 切换白板时，重置历史记录栈，防止跨白板撤销
+      historyStack.value = []
+      redoStack.value = []
+
+      if (res.data) {
+        loadFromJSON(res.data)
+      } else {
+        // 如果是新白板（后端返回 null），必须手动清空画布
+        clearCanvas()
+        store.setStatus('新白板已创建')
+      }
       showPasswordDialog.value = false
       passwordErrorMsg.value = '' // 成功后清空错误
     } else if (res.code === 403) {

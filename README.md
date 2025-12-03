@@ -2,6 +2,14 @@
 
 这是一个基于 **Vue 3** 和 **Fabric.js** 构建的实时协作白板应用。支持多人在线绘图、形状绘制、属性编辑、撤销重做以及云端保存等功能。后端采用 **Koa** + **Socket.io** 实现实时同步。
 
+## 📺 视频演示
+
+<div align="center">
+  <video src="asset/vedio.mp4" controls width="100%" autoplay loop muted></video>
+  <br/>
+  <small>如果视频无法播放，请<a href="asset/vedio.mp4">点击此处下载观看</a></small>
+</div>
+
 ## ✨ 功能特性
 
 *   **🖌️ 自由绘图**：支持画笔模式，可调节颜色和粗细。
@@ -73,20 +81,30 @@ MVP-demo/
     npm install
     ```
 
-2.  **启动后端服务**
+2.  **启动开发环境**
     ```bash
-    node server/index.js
+    node server/index.js 
+    #启动后端
     # 服务运行在 http://localhost:3000
     ```
-
-3.  **启动前端开发服务器**
     ```bash
     npm run dev
+    #启动前端
     # 页面运行在 http://localhost:5173
     ```
 
+3.  **生产环境构建与运行**
+    ```bash
+    npm run build
+    # 构建前端静态资源 (会在根目录生成 dist 文件夹)
+    ```
+    ```bash
+    node server/index.js 
+    # 页面运行在 http://localhost:5173 (自动代理 API 请求到后端)
+    ```
+
 4.  **访问**
-    打开浏览器访问 `http://（你的ip地址）:5173`。会自动跳转到默认白板 `/board/default`。
+    打开浏览器访问 `# 页面运行在 http://localhost:5173 (通过代理连接后端)`。会自动跳转到默认白板 `/board/default`。
 
 ## 📖 使用指南
 

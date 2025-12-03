@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import WhiteBoard from '../views/WhiteBoard.vue'
+import Whiteboard from '../views/WhiteBoard.vue'
 
 const routes = [
   {
@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/board/:id', // 动态路由参数 :id
     name: 'Board',
-    component: WhiteBoard,
+    component: Whiteboard,
   },
 ]
 
