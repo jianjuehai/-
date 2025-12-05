@@ -197,12 +197,11 @@ export function useCanvas() {
           erasingCandidates.add(obj)
           c.requestRenderAll()
 
-          // ⚠️ 关键修复：删除了这里的 break
           // 允许一次鼠标移动删除多条重叠或相邻的线
         }
       }
 
-      // [重要] 更新上一次的位置，为下一帧做准备
+      // 更新上一次的位置，为下一帧做准备
       lastPointer = pointer
     })
 
@@ -212,8 +211,6 @@ export function useCanvas() {
 
       // 如果是橡皮擦模式
       if (isEraserMode) {
-        // --- 修复代码开始 ---
-
         // 1. 上锁：禁止中间过程触发 saveHistory
         isBatchOperation = true
 
@@ -244,7 +241,6 @@ export function useCanvas() {
           isBatchOperation = false
         }
 
-        // --- 修复代码结束 ---
         return
       }
 
@@ -274,14 +270,6 @@ export function useCanvas() {
     })
 
     c.on('object:removed', (e) => handleAction('remove', e))
-  }
-
-  // --- 辅助功能：重置视图 ---
-  const resetZoom = () => {
-    if (!canvas.value) return
-    const c = canvas.value
-    c.setViewportTransform([1, 0, 0, 1, 0, 0]) // 重置变换矩阵
-    c.setZoom(1) // 重置缩放比例
   }
 
   const emitEvent = (action, data) => {
@@ -504,6 +492,5 @@ export function useCanvas() {
     redo,
     historyStack,
     redoStack,
-    resetZoom,
   }
 }

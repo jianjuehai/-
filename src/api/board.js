@@ -10,7 +10,8 @@ export const updateShareSettings = async (boardId, settings) => {
   return await res.json()
 }
 
-// 动态构建后端地址：使用当前访问的 IP，但端口改成 3000
+// 动态构建后端地址：使用当前访问的 IP，端口为 3000
+// import.meta.env.PROD === true 表示生产环境
 const getBaseUrl = () => {
   if (import.meta.env.PROD) return '/api'
   const { protocol, hostname } = window.location
